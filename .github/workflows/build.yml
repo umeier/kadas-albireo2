@@ -6,8 +6,19 @@ jobs:
     name: mingw build
     runs-on: ubuntu-latest
     steps:
+      - name: download QGIS build
+        run: |
+          ASSET_URL=$(curl -s https://api.github.com/repos/kadas-albireo/QGIS/releases/latest | jq -r .assets[0].browser_download_url)
+          wget $ASSET_URL
+          mkdir -p build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw
+          unzip qgis-portable-win64.zip -d build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw
       - uses: actions/checkout@v1
       - name: build kadas2-mingw-buildenv
         run: docker build -t kadas2-mingw-buildenv .
+      - name: version number
+        id: version_number
+        run: |
+          if [ ${{ startsWith(github.ref, 'refs/tags/') }} = true ]; then VERSION=$(basename ${{ github.ref }}); else VERSION=$(date +%Y%m%d%S); fi
+          echo "##[set-output name=version;]$VERSION"
       - name: build application
         run: docker run -v $PWD:/workspace -e QGIS_INSTALL_PREFIX=. kadas2-mingw-buildenv scripts/mingwbuild.sh

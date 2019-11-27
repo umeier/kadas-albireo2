@@ -1,3 +1,5 @@
+# MinGW build environment for QGIS / KADAS Albireo
+
 FROM fedora:rawhide
 
 MAINTAINER Sandro Mani <manisandro@gmail.com>
@@ -15,15 +17,19 @@ dnf install -y \
   mingw64-GdbCrashHandler \
   mingw64-GeographicLib \
   mingw64-geos \
+  mingw64-gsl \
   mingw64-libgomp \
+  mingw64-libzip \
   mingw64-osgearth-qt5 \
   mingw64-postgresql \
   mingw64-proj \
-  mingw64-python3-qscintilla-qt5 \
-  mingw64-python3-qt5 \
-  mingw64-qscintilla-qt5 \
+  mingw64-python3 \
   mingw64-python3-OWSLib \
   mingw64-python3-pyyaml \
+  mingw64-python3-qscintilla-qt5 \
+  mingw64-python3-qt5 \
+  mingw64-qca-qt5 \
+  mingw64-qscintilla-qt5 \
   mingw64-qt5-qmake \
   mingw64-qt5-qtactiveqt \
   mingw64-qt5-qtbase \
@@ -31,11 +37,13 @@ dnf install -y \
   mingw64-qt5-qtlocation \
   mingw64-qt5-qtmultimedia \
   mingw64-qt5-qtscript \
+  mingw64-qt5-qtserialport \
   mingw64-qt5-qtsvg \
   mingw64-qt5-qttools \
   mingw64-qt5-qttranslations \
   mingw64-qt5-qtwebkit \
   mingw64-qt5-qtxmlpatterns \
+  mingw64-qtkeychain-qt5 \
   mingw64-quazip-qt5 \
   mingw64-qwt-qt5 \
   mingw64-sip \
@@ -44,11 +52,11 @@ dnf install -y \
   mingw64-svg2svgt \
   bison \
   cmake \
+  findutils \
+  flex \
   gcc-c++ \
   gdal-devel \
   git \
-  findutils \
-  flex \
   make \
   proj-devel \
   python-qt5 \
