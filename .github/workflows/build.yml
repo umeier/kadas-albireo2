@@ -3,22 +3,22 @@ on: [push]
 
 jobs:
   build:
-    name: mingw build
+    name: MinGW build
     runs-on: ubuntu-latest
     steps:
-      - name: download QGIS build
+      - uses: actions/checkout@v1
+      - name: Build kadas2-mingw-buildenv
+        run: docker build -t kadas2-mingw-buildenv .
+      - name: Download QGIS build
         run: |
           ASSET_URL=$(curl -s https://api.github.com/repos/kadas-albireo/QGIS/releases/latest | jq -r .assets[0].browser_download_url)
-          wget $ASSET_URL
+          wget --no-verbose $ASSET_URL
           mkdir -p build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw
           unzip qgis-portable-win64.zip -d build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw
-      - uses: actions/checkout@v1
-      - name: build kadas2-mingw-buildenv
-        run: docker build -t kadas2-mingw-buildenv .
-      - name: version number
+      - name: Version number
         id: version_number
         run: |
           if [ ${{ startsWith(github.ref, 'refs/tags/') }} = true ]; then VERSION=$(basename ${{ github.ref }}); else VERSION=$(date +%Y%m%d%S); fi
           echo "##[set-output name=version;]$VERSION"
-      - name: build application
-        run: docker run -v $PWD:/workspace -e QGIS_INSTALL_PREFIX=. kadas2-mingw-buildenv scripts/mingwbuild.sh
+      - name: Build application
+        run: docker run -v $PWD:/workspace -e QGIS_INSTALL_PREFIX=/workspace/build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw kadas2-mingw-buildenv scripts/mingwbuild.sh x86_64 nodebug 4
