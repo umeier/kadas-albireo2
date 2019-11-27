@@ -22,3 +22,25 @@ jobs:
           echo "##[set-output name=version;]$VERSION"
       - name: Build application
         run: docker run -v $PWD:/workspace -e QGIS_INSTALL_PREFIX=/workspace/build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw kadas2-mingw-buildenv scripts/mingwbuild.sh x86_64 nodebug 4
+      - name: Create portable zip
+        run: (cd build_mingw64/dist/usr/x86_64-w64-mingw32/sys-root/mingw && zip -r - *) > kadas-portable-win64.zip
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version_number.outputs.version }}
+          release_name: Build ${{ steps.version_number.outputs.version }}
+          draft: false
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./kadas-portable-win64.zip
+          asset_name: kadas-portable-win64.zip
+          asset_content_type: application/zip
