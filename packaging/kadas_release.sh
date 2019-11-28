@@ -34,7 +34,7 @@ cp -a $filesdir/* $distroot/share/kadas/
 
 # Install python plugins
 mkdir -p $distroot/share/kadas/python/plugins
-for plugin in kadas-print-plugin kadas-help-plugin kadas-gpkg-plugin; do
+for plugin in kadas-print-plugin kadas-about-plugin kadas-help-plugin kadas-gpkg-plugin; do
   version=master
   wget -O $plugin.zip https://github.com/kadas-albireo/$plugin/archive/$version.zip
   unzip $plugin.zip
