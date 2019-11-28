@@ -26,7 +26,7 @@ jobs:
         run: docker run -v $PWD:/workspace kadas2-mingw-buildenv packaging/kadas_release.sh
       - name: Create portable zip
         run: (cd dist && zip -r - *) > kadas-portable-win64.zip
-      - name: Create debug zip
+      - name: Create debugsym zip
         run: (cd dist_debug && zip -r - *) > kadas-portable-win64-debugsym.zip
       - name: Create release
         id: create_release
@@ -47,7 +47,7 @@ jobs:
           asset_path: ./kadas-portable-win64.zip
           asset_name: kadas-portable-win64.zip
           asset_content_type: application/zip
-      - name: Upload debug release asset
+      - name: Upload debugsym release asset
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

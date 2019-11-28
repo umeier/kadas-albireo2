@@ -24,6 +24,7 @@ dnf install -y \
   mingw64-postgresql \
   mingw64-proj \
   mingw64-python3 \
+  mingw64-python3-lxml \
   mingw64-python3-OWSLib \
   mingw64-python3-pyyaml \
   mingw64-python3-qscintilla-qt5 \
